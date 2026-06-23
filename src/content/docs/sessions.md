@@ -1,80 +1,78 @@
 ---
 title: Sessions
-description: Authorize an account via QR or phone + 2FA, and keep it connected.
+description: Authorize an account via QR or phone + 2FA, from the dashboard or the API, and keep it connected.
 ---
 
 A **session** is the saved credential that keeps an instance logged in to
 Telegram. You create one by completing a login flow once; Flux then persists it
 (encrypted) and reconnects automatically on restart.
 
-There are two ways to log in: **QR code** or **phone number**. Both end in
+There are two ways to log in — **QR code** or **phone number** — both ending in
 `authorized`.
 
-## QR login
+## Connect an account
 
-Open the QR stream (Server-Sent Events) and render each `qr` url as a QR code for
-the user to scan in their Telegram app:
+### In the dashboard
 
-```bash
-curl -N http://localhost:3000/telegram/instances/<id>/login/qr \
-  -H 'Authorization: Bearer <JWT>' -H 'x-api-key: <API_KEY>'
-```
+![Add instance modal with the QR / phone choice, annotated](../../assets/screenshots/instance-modal-annotated.png)
 
-The stream emits, in order:
+1. When creating (or connecting) an instance, pick **QR code** or **Phone
+   number**.
+2. **QR**: a code appears — open Telegram on your phone → **Settings → Devices →
+   Link Desktop Device** and scan it.
+3. **Phone**: enter your number, then the code Telegram sends you.
+4. If the account has 2FA, enter the **password** when asked. Status becomes
+   `authorized`.
+
+### Via the API — QR
+
+`GET /telegram/instances/:id/login/qr` is a **Server-Sent Events** stream. Render
+each `qr` url as a QR code for the user to scan. Events, in order:
 
 | Event | Meaning |
 | --- | --- |
-| `{ "type": "qr", "url": "tg://login?token=…", "expires": 30 }` | Show this as a QR; it refreshes periodically |
-| `{ "type": "password_required" }` | The account has 2FA — submit the password (below) |
+| `{ "type": "qr", "url": "tg://login?token=…", "expires": 30 }` | Show as a QR; refreshes periodically |
+| `{ "type": "password_required" }` | The account has 2FA — submit the password |
 | `{ "type": "authorized", "me": { … } }` | Done — the instance is connected |
 | `{ "type": "error", "message": "…" }` | Login failed |
 
-If you get `password_required`, submit the 2FA password:
+### Via the API — phone
 
-```bash
-curl -X POST http://localhost:3000/telegram/instances/<id>/login/password \
-  -H 'Authorization: Bearer <JWT>' -H 'x-api-key: <API_KEY>' \
-  -H 'Content-Type: application/json' \
-  -d '{"password":"my-2fa-password"}'
-```
+Two steps, then optional 2FA:
 
-## Phone login
+**1. Start** — `POST /telegram/instances/:id/login/phone`. Telegram sends a code.
 
-1. **Start** — Telegram sends a code to the account's app/SMS:
+| Field | Type | Required | Rules | Description |
+| --- | --- | :---: | --- | --- |
+| `phone` | string | yes | international format `^\+[1-9]\d{6,14}$` | e.g. `+5511999999999` |
 
-```bash
-curl -X POST http://localhost:3000/telegram/instances/<id>/login/phone \
-  -H 'Authorization: Bearer <JWT>' -H 'x-api-key: <API_KEY>' \
-  -H 'Content-Type: application/json' \
-  -d '{"phone":"+5511999999999"}'
-```
+**2. Submit the code** — `POST /telegram/instances/:id/login/code`.
 
-2. **Submit the code** — returns the next step:
+| Field | Type | Required | Rules | Description |
+| --- | --- | :---: | --- | --- |
+| `code` | string | yes | 5–6 digits | The OTP from Telegram |
 
-```bash
-curl -X POST http://localhost:3000/telegram/instances/<id>/login/code \
-  -H 'Authorization: Bearer <JWT>' -H 'x-api-key: <API_KEY>' \
-  -H 'Content-Type: application/json' \
-  -d '{"code":"12345"}'
-# → { "status": "authorized", "me": { … } }
-#   or { "status": "password_required" }
-```
+Returns `{ status: "authorized", me }` **or** `{ status: "password_required" }`.
 
-3. **2FA (if required)** — submit the password at the same
-`/login/password` endpoint as above.
+**3. 2FA (if required)** — `POST /telegram/instances/:id/login/password`. Same
+endpoint for QR and phone.
+
+| Field | Type | Required | Description |
+| --- | --- | :---: | --- |
+| `password` | string | yes | Your Telegram 2FA password |
 
 ## Persistence & reconnection
 
 - The session string is stored in Redis, **encrypted at rest** (AES-256-GCM).
 - On startup, every authorized instance is rehydrated and reconnected.
 - A periodic health check detects sessions **revoked remotely** (e.g. you ended
-  the session from the Telegram app). When that happens the instance moves to
-  `error` and clears its session — just log in again.
+  the session from the Telegram app). The instance then moves to `error` and
+  clears its session — just log in again.
 
 ## Stop vs. log out
 
-- `POST …/instances/:id/stop` disconnects but **keeps** the session (resume later
-  with `start`).
-- `DELETE …/instances/:id` removes the instance **and** its session.
+- `POST /telegram/instances/:id/stop` disconnects but **keeps** the session
+  (resume later with `start`).
+- `DELETE /telegram/instances/:id` removes the instance **and** its session.
 
 See [Instances](/flux-docs/instances/) for start/stop/delete and status values.

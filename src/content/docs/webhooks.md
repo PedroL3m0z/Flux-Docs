@@ -1,6 +1,6 @@
 ---
 title: Webhooks
-description: Receive Telegram events on your own endpoint — signed and retried.
+description: Receive Telegram events on your own endpoint — signed and retried. Manage from the dashboard or the API.
 ---
 
 A **webhook** delivers events to a URL you own. You subscribe it to a subset of
@@ -10,31 +10,40 @@ it to your endpoint with retries and an HMAC signature.
 
 ![Webhooks list in the dashboard, annotated](../../assets/screenshots/webhooks-annotated.png)
 
-The dashboard **Webhooks** page lists each endpoint with its URL, subscribed
-events, linked instances and status; **Add webhook** opens the create form.
-
 ## Create a webhook
 
-```bash
-curl -X POST http://localhost:3000/webhooks \
-  -H 'Authorization: Bearer <JWT>' -H 'x-api-key: <API_KEY>' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "name": "My integration",
-    "url": "https://example.com/hooks/flux",
-    "events": ["message.new", "message.read"],
-    "instanceIds": ["<instanceId>"]
-  }'
-```
-
-The response includes the signing **`secret`** (prefix `whsec_`) **once** — store
-it now; it is never shown again. List the subscribable types with
-`GET /webhooks/event-types`.
-
-In the dashboard, **Add webhook** opens this modal — name it, set the URL, tick
-the event types and link instances:
+### In the dashboard
 
 ![Add webhook modal, annotated step by step](../../assets/screenshots/webhook-modal-annotated.png)
+
+1. **Webhooks → Add webhook**.
+2. Set a **name** and your **URL**, tick the **event types**, link the
+   **instances** to listen on.
+3. **Create** — the signing **secret** is shown **once**; copy it now.
+
+### Via the API
+
+`POST /webhooks` — JWT + API key.
+
+| Field | Type | Required | Rules | Description |
+| --- | --- | :---: | --- | --- |
+| `name` | string | yes | 1–80 chars | Label for the webhook |
+| `url` | string | yes | valid URL | Where deliveries are POSTed |
+| `events` | string[] | yes | non-empty; each a valid [event type](/flux-docs/events/) | Which events to send |
+| `instanceIds` | string[] | no | instance ids | Instances to listen on (link later if omitted) |
+
+```json
+// POST /webhooks
+{
+  "name": "My integration",
+  "url": "https://example.com/hooks/flux",
+  "events": ["message.new", "message.read"],
+  "instanceIds": ["<instanceId>"]
+}
+```
+
+The response is a `WebhookWithSecret` — the `secret` (prefix `whsec_`) appears
+**only here**. List the subscribable types with `GET /webhooks/event-types`.
 
 ## Receiving a delivery
 
@@ -45,7 +54,7 @@ Flux sends a `POST` with this body:
   "event": "message.new",
   "instanceId": "<instanceId>",
   "at": "2026-06-19T12:00:00.000Z",
-  "data": { "...": "the event payload, e.g. a message" }
+  "data": { "...": "the event payload, e.g. a MessageView" }
 }
 ```
 
@@ -79,35 +88,47 @@ function verify(rawBody: string, header: string, secret: string): boolean {
 ## Delivery guarantees
 
 - **Durable** — every attempt is stored, surviving restarts.
-- **Retried with backoff** — `10s → 1m → 5m → 30m → 2h`; after 6 attempts a
+- **Retried with backoff** — `10s → 1m → 5m → 30m → 2h`; after **6 attempts** a
   delivery is marked `dead`.
-- **Auditable** — inspect the log and re-send manually (below).
+- **Auditable** — inspect the log and re-send manually.
 
 ## Manage
 
-| Action | Route |
-| --- | --- |
-| List your webhooks | `GET /webhooks` |
-| Get one | `GET /webhooks/:id` |
-| Update (name, url, active, events) | `PATCH /webhooks/:id` |
-| Delete | `DELETE /webhooks/:id` |
-| Rotate the secret (returned once) | `POST /webhooks/:id/regenerate-secret` |
-| Link / unlink an instance | `POST` / `DELETE /webhooks/:id/instances/:instanceId` |
-| Delivery log (`?limit=`, default 50) | `GET /webhooks/:id/deliveries` |
-| Re-queue a delivery now | `POST /webhooks/deliveries/:deliveryId/resend` |
-
-Each row exposes these as icon buttons — toggle active, view deliveries, rotate
-the secret, edit and delete:
+### In the dashboard
 
 ![Webhook row actions, annotated](../../assets/screenshots/webhooks-row-annotated.png)
 
-The **Deliveries** button opens a per-webhook log (status, HTTP code, attempts)
-with a manual resend:
+Each row: toggle **active**, view **deliveries**, **rotate secret**, **edit**,
+**delete**. The deliveries log shows status, HTTP code and attempts, with a manual
+resend:
 
 ![Webhook deliveries modal, annotated](../../assets/screenshots/webhook-deliveries-annotated.png)
 
+### Via the API
+
+| Action | Route | Method |
+| --- | --- | --- |
+| List your webhooks | `/webhooks` | GET |
+| Get one | `/webhooks/:id` | GET |
+| Update | `/webhooks/:id` | PATCH |
+| Delete (and its deliveries) | `/webhooks/:id` | DELETE |
+| Rotate the secret (returned once) | `/webhooks/:id/regenerate-secret` | POST |
+| Link an instance | `/webhooks/:id/instances/:instanceId` | POST |
+| Unlink an instance | `/webhooks/:id/instances/:instanceId` | DELETE |
+| Delivery log (`?limit=`, default 50) | `/webhooks/:id/deliveries` | GET |
+| Re-queue a delivery now | `/webhooks/deliveries/:deliveryId/resend` | POST |
+
+**Update** (`PATCH /webhooks/:id`) — all fields optional:
+
+| Field | Type | Rules | Description |
+| --- | --- | --- | --- |
+| `name` | string | 1–80 chars | Rename |
+| `url` | string | valid URL | Change the endpoint |
+| `active` | boolean | — | Enable/disable delivery |
+| `events` | string[] | valid event types | Replace the subscription |
+
 :::caution[Public URLs only]
-Webhook URLs that point at localhost, private/reserved IP ranges or cloud
-metadata are rejected when you create or update the webhook, and re-checked
-(with DNS resolution) before each delivery. Use a publicly reachable HTTPS URL.
+URLs pointing at localhost, private/reserved IP ranges or cloud metadata are
+rejected on create/update, and re-checked (with DNS resolution) before each
+delivery. Use a publicly reachable HTTPS URL.
 :::

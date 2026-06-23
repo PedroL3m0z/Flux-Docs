@@ -1,53 +1,42 @@
 ---
 title: Instances
-description: Create, start, stop and use Telegram instances.
+description: Create, connect, operate and use Telegram instances — from the dashboard or the API.
 ---
 
 An **instance** is one Telegram account managed by Flux. You create it, authorize
-it once (see [Sessions](/flux-docs/sessions/)), and then use it to read and send
-messages. All routes below require a JWT + API key.
+it once (see [Sessions](/flux-docs/sessions/)), then use it to read and send
+messages.
 
 ![Instances list in the dashboard, annotated](../../assets/screenshots/instances-annotated.png)
 
-In the dashboard, **Instances** lists every connected account with its engine,
-status and creation date; **Add instance** creates a new one.
+## Create an instance
 
-## Create
-
-```bash
-curl -X POST http://localhost:3000/telegram/instances \
-  -H 'Authorization: Bearer <JWT>' -H 'x-api-key: <API_KEY>' \
-  -H 'Content-Type: application/json' \
-  -d '{"label":"Main account"}'
-```
-
-| Field | Required | Notes |
-| --- | --- | --- |
-| `label` | yes | Human name (1–64 chars) |
-| `engine` | no | Defaults to `gramjs` — see [Engines](/flux-docs/engines/) |
-| `apiId` / `apiHash` | no | Override the global [credentials](/flux-docs/telegram-credentials/) |
-
-The new instance starts in status `new` — it has no Telegram session yet.
-
-In the dashboard, **Add instance** opens this modal — name it, pick an engine and
-choose a login method:
+### In the dashboard
 
 ![Add instance modal, annotated step by step](../../assets/screenshots/instance-modal-annotated.png)
 
-## List, read & inspect
+1. **Instances → Add instance**.
+2. Give it a **label**, pick an **engine** (GramJS by default).
+3. Choose a login method (QR or phone) and **Create**.
 
-```bash
-curl http://localhost:3000/telegram/instances -H ...          # list
-curl http://localhost:3000/telegram/instances/<id> -H ...     # one instance
-curl http://localhost:3000/telegram/instances/<id>/info -H ...# + live state
-```
+### Via the API
 
-`/info` adds the live connection state and uptime:
+`POST /telegram/instances` — JWT + API key.
+
+| Field | Type | Required | Rules | Description |
+| --- | --- | :---: | --- | --- |
+| `label` | string | yes | 1–64 chars | Human-readable name |
+| `engine` | string | no | `gramjs` \| `telegraf` (default `gramjs`) | Telegram backend — see [Engines](/flux-docs/engines/) |
+| `apiId` | string | no | digits only | Override the global [api_id](/flux-docs/telegram-credentials/) |
+| `apiHash` | string | no | — | Override the global api_hash |
 
 ```json
-{ "id": "…", "label": "Main account", "status": "authorized",
-  "username": "me", "connected": true, "uptimeSeconds": 1280 }
+// POST /telegram/instances
+{ "label": "Main account", "engine": "gramjs" }
 ```
+
+The new instance starts in status `new` — it has no Telegram session yet. The
+response is an `InstanceView` (see [Types](/flux-docs/types/)).
 
 ## Status values
 
@@ -55,56 +44,81 @@ curl http://localhost:3000/telegram/instances/<id>/info -H ...# + live state
 | --- | --- |
 | `new` | Created, never logged in |
 | `connecting` | Establishing the connection |
-| `awaiting_qr` / `awaiting_code` | Waiting for QR scan / phone code |
+| `awaiting_qr` / `awaiting_code` | Waiting for a QR scan / phone code |
 | `password_required` | Waiting for the 2FA password |
 | `authorized` | Connected and usable |
 | `disconnected` | Stopped, session kept |
 | `error` | Session revoked/expired — log in again |
 
-## Start & stop
+## Operate an instance
 
-`start` reconnects from the saved session; `stop` disconnects but keeps it.
-
-```bash
-curl -X POST http://localhost:3000/telegram/instances/<id>/start -H ...
-curl -X POST http://localhost:3000/telegram/instances/<id>/stop  -H ...
-```
-
-Each row in the dashboard exposes the same actions as icon buttons:
+### In the dashboard
 
 ![Instance row actions, annotated](../../assets/screenshots/instances-row-annotated.png)
 
-## Delete
+Each row exposes, as icon buttons: **info** (live state), **open chats**,
+**start/stop**, and **delete**.
 
-Removes the instance **and its session** (and cascades its chats/messages):
+### Via the API
 
-```bash
-curl -X DELETE http://localhost:3000/telegram/instances/<id> -H ...   # 204
-```
+| Route | Method | Description |
+| --- | --- | --- |
+| `/telegram/instances` | GET | List instances |
+| `/telegram/instances/:id` | GET | One instance |
+| `/telegram/instances/:id/info` | GET | Details + live connection state + uptime |
+| `/telegram/instances/:id/start` | POST | Connect from the saved session |
+| `/telegram/instances/:id/stop` | POST | Disconnect (keeps the session) |
+| `/telegram/instances/:id` | DELETE | Remove the instance **and its session** (cascades chats/messages) |
 
-## Using an instance
+`start`/`stop`/`delete` take no body. To authorize a `new` instance, see
+[Sessions](/flux-docs/sessions/).
 
-Once `authorized`, work with its chats and messages:
+## Chats, messages & media
 
-| Action | Route |
-| --- | --- |
-| List chats | `GET …/instances/:id/chats` |
-| List history (cursor) | `GET …/chats/:chatId/messages?cursor=&limit=` |
-| Send text | `POST …/chats/:chatId/messages` `{ "text": "..." }` |
-| Send media (≤50 MB) | `POST …/chats/:chatId/media` (multipart: `file`, `caption?`) |
-| Download attachment | `GET …/messages/:messageId/media` |
-| Chat / contact avatar | `GET …/chats/:chatId/photo`, `…/contacts/:contactId/photo` |
+Once an instance is `authorized`:
 
-```bash
-# Page backwards through history: pass the oldest id you received as the cursor
-curl 'http://localhost:3000/telegram/instances/<id>/chats/<chatId>/messages?limit=50' -H ...
+### In the dashboard
 
-# Send a photo with a caption
-curl -X POST http://localhost:3000/telegram/instances/<id>/chats/<chatId>/media \
-  -H 'Authorization: Bearer <JWT>' -H 'x-api-key: <API_KEY>' \
-  -F file=@photo.jpg -F caption='Look at this'
-```
+Open the instance to browse chats and contacts, read paginated history, and send
+text or media (photos, videos, documents up to 50 MB). Incoming messages appear
+live.
 
-To get new messages in realtime, stream [Events](/flux-docs/events/) or use
-[Webhooks](/flux-docs/webhooks/). For an account-wide health view, `GET
-/telegram/stats` returns uptime and total/authorized/connected counts.
+### Via the API
+
+| Action | Route | Method |
+| --- | --- | --- |
+| List chats | `/telegram/instances/:id/chats` | GET |
+| List history | `/telegram/instances/:id/chats/:chatId/messages` | GET |
+| Send text | `/telegram/instances/:id/chats/:chatId/messages` | POST |
+| Send media | `/telegram/instances/:id/chats/:chatId/media` | POST |
+| Download attachment | `…/chats/:chatId/messages/:messageId/media` | GET |
+| Chat / contact avatar | `…/chats/:chatId/photo`, `…/contacts/:contactId/photo` | GET |
+
+**List history** — query parameters:
+
+| Param | Type | Required | Description |
+| --- | --- | :---: | --- |
+| `cursor` | string | no | Oldest `tgMessageId` you received; pages backwards |
+| `limit` | number | no | Page size |
+
+**Send a text message** — body:
+
+| Field | Type | Required | Rules | Description |
+| --- | --- | :---: | --- | --- |
+| `text` | string | yes | 1–4096 chars | Message body |
+
+**Send media** — `multipart/form-data`:
+
+| Part | Type | Required | Rules | Description |
+| --- | --- | :---: | --- | --- |
+| `file` | file | yes | ≤ 50 MB | Photo, video or document |
+| `caption` | string | no | ≤ 1024 chars | Optional caption |
+
+Responses use `ChatView` / `MessageView` / `MediaView` — full shapes in
+[Types & contracts](/flux-docs/types/). Media bytes are **downloaded lazily**: a
+message carries only `media` metadata; fetch the bytes from the attachment route
+when needed.
+
+To react to incoming messages, stream [Events](/flux-docs/events/) or subscribe a
+[Webhook](/flux-docs/webhooks/). For an account-wide view, `GET /telegram/stats`
+returns uptime and total/authorized/connected counts.

@@ -1,19 +1,19 @@
 ---
 title: Events
-description: The event types and how to stream them in realtime.
+description: The event types and how to consume them — live in the dashboard or as an SSE/webhook stream.
 ---
 
-Every instance emits **normalized events** when something happens — a new
-message, an edit, a read receipt, a status change. You can consume them two ways:
-a realtime **SSE stream**, or durable [**webhooks**](/flux-docs/webhooks/).
+Every instance emits **normalized events** when something happens — a new message,
+an edit, a read receipt, a status change. You can consume them two ways: a
+realtime **SSE stream**, or durable [**webhooks**](/flux-docs/webhooks/).
 
 ## Event types
 
 | Type | Fires when | Payload (summary) |
 | --- | --- | --- |
 | `session.status` | An instance connects, disconnects, errors or is revoked | `{ status, username?, phone? }` |
-| `message.new` | A message is received or sent | the message |
-| `message.edited` | A message is edited | the message |
+| `message.new` | A message is received or sent | `MessageView` |
+| `message.edited` | A message is edited | `MessageView` |
 | `message.deleted` | One or more messages are deleted | `{ chat?, tgMessageIds[] }` |
 | `message.read` | A read receipt ("seen") | `{ chat, maxId, direction }` |
 | `message.reaction` | A reaction is added or removed | `{ chat, tgMessageId, reactions[] }` |
@@ -23,29 +23,29 @@ In `message.read`, `direction: "outbound"` means the recipient read **your**
 message (the classic "seen"); `"inbound"` means you read theirs.
 :::
 
-Each event is delivered in a `DomainEvent` envelope (`instanceId`, `type`, `at`,
-`payload`). The exact payload shape per type is in
+Each event is wrapped in a `DomainEvent` envelope (`instanceId`, `type`, `at`,
+`payload`). Exact payload shapes are in
 [Types & contracts](/flux-docs/types/#event-payloads).
 
-## Stream over SSE
+## Consume events
+
+### In the dashboard
+
+Open an instance's chats — new messages, edits, reactions and read receipts appear
+**live** as they arrive, powered by the same event stream. No setup needed.
+
+### Via the API (SSE)
 
 Open a Server-Sent Events connection and process each `data` payload as it
-arrives. New messages for one instance:
+arrives.
 
-```bash
-curl -N http://localhost:3000/telegram/instances/<id>/messages/stream \
-  -H 'Authorization: Bearer <JWT>' -H 'x-api-key: <API_KEY>'
-```
+| Stream | Route |
+| --- | --- |
+| New messages for one instance | `GET /telegram/instances/:id/messages/stream` |
+| Status transitions for all instances | `GET /telegram/instances/status/stream` |
 
-Session status across **all** instances:
-
-```bash
-curl -N http://localhost:3000/telegram/instances/status/stream \
-  -H 'Authorization: Bearer <JWT>' -H 'x-api-key: <API_KEY>'
-```
-
-From a browser, `EventSource` can't set headers — pass the key in the query
-string instead:
+Both require JWT + API key. From a browser, `EventSource` can't set headers — pass
+the key in the query string instead:
 
 ```js
 const es = new EventSource(
