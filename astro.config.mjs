@@ -40,6 +40,7 @@ export default defineConfig({
         { label: 'Accounts', slug: 'accounts' },
         { label: 'API reference', slug: 'api-reference' },
         { label: 'Types & contracts', slug: 'types' },
+        { label: 'Contributing', slug: 'contributing' },
       ],
     }),
   ],
