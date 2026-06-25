@@ -1,0 +1,118 @@
+---
+title: Primeiros passos
+description: Suba a Flux e conecte sua primeira conta do Telegram em minutos.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Esta página leva você do zero até uma conta conectada enviando uma mensagem. Cada passo aponta para seu guia completo.
+
+## 1. Suba o gateway
+
+Duas formas de subir a stack — escolha uma:
+
+<Tabs>
+  <TabItem label="Imagem all-in-one">
+
+O caminho mais rápido — API + PostgreSQL + Redis em um único container publicado, sem clonar ou configurar nada:
+
+```bash
+# Docker Hub
+docker run -d -p 3000:3000 -v flux_data:/data pedrooaj/flux-api
+
+# ou GitHub Container Registry
+docker run -d -p 3000:3000 -v flux_data:/data ghcr.io/pedrol3m0z/flux-api
+```
+
+A imagem é multi-arquitetura (`linux/amd64` + `linux/arm64`) e tem tag por release (`X.Y.Z`, `X.Y`, `latest`). O volume `/data` persiste o banco, os dados do Redis e os segredos gerados automaticamente — **mantenha-o** entre recriações do container.
+
+Feita para cenários single-host / self-hosted, não para escala horizontal (um restart recicla todos os processos).
+
+  </TabItem>
+  <TabItem label="Docker Compose">
+
+Clone o repo e rode a API, o Postgres e o Redis como serviços separados — a escolha para deploys escaláveis:
+
+```bash
+git clone https://github.com/PedroL3m0z/Flux-Api.git
+cd flux-api
+docker compose up -d
+```
+
+  </TabItem>
+</Tabs>
+
+| Superfície | URL |
+| --- | --- |
+| API | `http://localhost:3000` |
+| Dashboard | `http://localhost:3000/dashboard` |
+| Docs interativas da API (Scalar) | `http://localhost:3000/docs` |
+
+:::tip[Configuração zero]
+Nenhuma variável de ambiente é necessária. No primeiro boot a Flux gera segredos fortes e um usuário **admin** inicial, imprimindo a **API key** e a **senha** do admin no log **uma única vez** (`docker logs <container>`) — copie agora. Eles também ficam persistidos no volume `/data` (`secrets.json`).
+:::
+
+## 2. Faça login
+
+Toda requisição protegida precisa de duas coisas: um **JWT** (quem você é) e a **API key** (`x-api-key`). Obtenha o JWT fazendo login:
+
+```bash
+curl -X POST http://localhost:3000/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{"username":"admin","password":"<do log de boot>"}'
+# → { "accessToken": "<JWT>" }
+```
+
+Veja [Autenticação](/flux-docs/pt-br/authentication/) para o quadro completo.
+
+## 3. Defina suas credenciais do Telegram
+
+A Flux fala com o Telegram usando um `api_id` / `api_hash` de [my.telegram.org](https://my.telegram.org):
+
+```bash
+curl -X PUT http://localhost:3000/telegram/settings \
+  -H 'Authorization: Bearer <JWT>' \
+  -H 'x-api-key: <API_KEY>' \
+  -H 'Content-Type: application/json' \
+  -d '{"apiId":"123456","apiHash":"abcdef..."}'
+```
+
+Mais em [Credenciais do Telegram](/flux-docs/pt-br/telegram-credentials/).
+
+## 4. Crie uma instância
+
+```bash
+curl -X POST http://localhost:3000/telegram/instances \
+  -H 'Authorization: Bearer <JWT>' -H 'x-api-key: <API_KEY>' \
+  -H 'Content-Type: application/json' \
+  -d '{"label":"Conta principal"}'
+# → { "id": "<instanceId>", "status": "new", ... }
+```
+
+Veja [Instâncias](/flux-docs/pt-br/instances/).
+
+## 5. Autorize a instância (login no Telegram)
+
+Abra um stream de login por QR e escaneie o código com o celular, ou faça login por número de telefone + código. Fluxos completos em [Sessões](/flux-docs/pt-br/sessions/).
+
+## 6. Envie uma mensagem
+
+```bash
+curl -X POST \
+  http://localhost:3000/telegram/instances/<instanceId>/chats/<chatId>/messages \
+  -H 'Authorization: Bearer <JWT>' -H 'x-api-key: <API_KEY>' \
+  -H 'Content-Type: application/json' \
+  -d '{"text":"Olá da Flux"}'
+```
+
+A partir daqui, assine [Webhooks](/flux-docs/pt-br/webhooks/) ou consuma [Eventos](/flux-docs/pt-br/events/) para reagir a mensagens recebidas.
+
+## Prefere o dashboard?
+
+Tudo acima também é point-and-click em `http://localhost:3000/dashboard`: faça login, defina credenciais em **Settings**, crie uma instância, conecte-a via QR ou telefone, e abra seus chats.
+
+![A página Overview do dashboard, anotada](../../../assets/screenshots/overview-annotated.png)
+
+O **Overview** mostra uptime, contagem de instâncias e webhooks, e a saúde dos serviços num relance. A página **Help** dentro do app percorre o mesmo fluxo passo a passo.
+
+![A página Help passo a passo do dashboard](../../../assets/screenshots/help.png)

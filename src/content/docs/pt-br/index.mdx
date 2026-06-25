@@ -1,0 +1,89 @@
+---
+title: Flux API
+description: Como usar a Flux API — rode contas do Telegram como instâncias atrás de uma REST API, eventos em tempo real e webhooks.
+template: splash
+hero:
+  tagline: Rode contas do Telegram como instâncias atrás de uma REST API limpa, eventos em tempo real e webhooks assinados.
+  image:
+    file: ../../../assets/logo.png
+  actions:
+    - text: Começar
+      link: /flux-docs/pt-br/getting-started/
+      icon: right-arrow
+      variant: primary
+    - text: Ver no GitHub
+      link: https://github.com/PedroL3m0z/Flux-Api
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { Image } from 'astro:assets';
+import overview from '../../../assets/screenshots/overview-annotated.png';
+
+A Flux transforma uma ou mais contas do Telegram em **instâncias** que você controla por HTTP — autentique, leia e envie mensagens, e receba cada atualização como eventos em tempo real ou webhooks assinados. Este guia percorre tudo o que dá para fazer, recurso por recurso.
+
+<p>
+  <a href="https://github.com/PedroL3m0z/Flux-Api/releases/latest">
+    <img src="https://img.shields.io/github/v/release/PedroL3m0z/Flux-Api?sort=semver&label=%C3%BAltima%20release&color=2563eb&logo=github" alt="Última release da Flux API" />
+  </a>
+  <a href="https://hub.docker.com/r/pedrooaj/flux-api">
+    <img src="https://img.shields.io/docker/v/pedrooaj/flux-api?sort=semver&label=Docker%20Hub&color=2496ed&logo=docker" alt="Flux API no Docker Hub" />
+  </a>
+  <a href="https://github.com/PedroL3m0z/Flux-Api/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/licen%C3%A7a-Apache%202.0-blue.svg" alt="Licença: Apache 2.0" />
+  </a>
+</p>
+
+## Por que a Flux
+
+<CardGrid>
+  <Card title="Open source" icon="github">
+    Apache-2.0, código no GitHub. Leia, faça fork, rode — sem caixa-preta, sem aprisionamento de fornecedor.
+  </Card>
+  <Card title="Self-hosted" icon="setting">
+    Suas contas, seu servidor, seus dados. Um container com Postgres + Redis embutidos, ou escale com o Compose.
+  </Card>
+  <Card title="REST API" icon="list-format">
+    Cada ação do Telegram é um endpoint HTTP simples, com spec OpenAPI e docs interativas (Scalar) em `/docs`.
+  </Card>
+  <Card title="Simples e fácil" icon="rocket">
+    Boot sem configuração — `docker run` e pronto. Segredos e o usuário admin são gerados no primeiro start.
+  </Card>
+  <Card title="Webhooks" icon="random">
+    Receba cada evento no seu endpoint — assinado (HMAC), com retentativas e backoff, e um log completo de entregas.
+  </Card>
+</CardGrid>
+
+## Veja na prática
+
+Um dashboard em Vue acompanha o gateway — gerencie instâncias, sessões, webhooks e usuários sem tocar na API:
+
+<Image src={overview} alt="Dashboard da Flux (Overview): uptime, contagem de instâncias e webhooks, e saúde dos serviços" />
+
+Prefere código? As mesmas coisas estão a uma chamada HTTP de distância:
+
+```bash
+# Enviar uma mensagem por uma instância autorizada
+curl -X POST \
+  http://localhost:3000/telegram/instances/<id>/chats/<chatId>/messages \
+  -H 'Authorization: Bearer <JWT>' -H 'x-api-key: <API_KEY>' \
+  -H 'Content-Type: application/json' \
+  -d '{"text":"Olá da Flux"}'
+```
+
+## Navegue pela documentação
+
+<CardGrid>
+  <LinkCard title="Primeiros passos" href="/flux-docs/pt-br/getting-started/" description="Suba a Flux e conecte sua primeira conta em minutos." />
+  <LinkCard title="Autenticação" href="/flux-docs/pt-br/authentication/" description="Faça login, obtenha um JWT e envie a API key em cada requisição." />
+  <LinkCard title="Credenciais do Telegram" href="/flux-docs/pt-br/telegram-credentials/" description="Defina o api_id / api_hash que alimentam a camada do Telegram." />
+  <LinkCard title="Instâncias" href="/flux-docs/pt-br/instances/" description="Crie, inicie, pare e use instâncias do Telegram." />
+  <LinkCard title="Sessões" href="/flux-docs/pt-br/sessions/" description="Autorize uma conta via QR ou telefone + 2FA." />
+  <LinkCard title="Webhooks" href="/flux-docs/pt-br/webhooks/" description="Receba eventos no seu endpoint, assinados e com retentativas." />
+  <LinkCard title="Eventos" href="/flux-docs/pt-br/events/" description="Os tipos de evento e como consumi-los via SSE." />
+  <LinkCard title="Contas" href="/flux-docs/pt-br/accounts/" description="Gerencie os usuários do dashboard e seus papéis." />
+  <LinkCard title="Referência da API" href="/flux-docs/pt-br/api-reference/" description="Todos os endpoints em tabelas, mais as docs interativas (Scalar)." />
+  <LinkCard title="Tipos e contratos" href="/flux-docs/pt-br/types/" description="Views de resposta, enums, payloads de evento e corpos das rotas de envio." />
+  <LinkCard title="Contribuindo" href="/flux-docs/pt-br/contributing/" description="Configure o repo, crie uma branch e abra um PR que entra limpo." />
+</CardGrid>
