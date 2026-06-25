@@ -20,6 +20,8 @@ hero:
 import { Card, CardGrid } from '@astrojs/starlight/components';
 import { Image } from 'astro:assets';
 import overview from '../../../assets/screenshots/overview-annotated.png';
+import instances from '../../../assets/screenshots/instances-annotated.png';
+import webhooks from '../../../assets/screenshots/webhooks-annotated.png';
 
 A Flux transforma uma ou mais contas do Telegram em **instâncias** que você controla por HTTP — autentique, leia e envie mensagens, e receba cada atualização como eventos em tempo real ou webhooks assinados. Este guia percorre tudo o que dá para fazer, recurso por recurso.
 
@@ -63,13 +65,36 @@ A Flux transforma uma ou mais contas do Telegram em **instâncias** que você co
 - **Receba webhooks assinados** — assine seu endpoint em qualquer subconjunto de eventos; entregas com assinatura HMAC, guardadas num outbox no Postgres e [com retentativa e backoff](/flux-docs/pt-br/webhooks/).
 - **Controle o acesso** — [contas](/flux-docs/pt-br/accounts/) do dashboard com papéis admin / operator / viewer, senhas Argon2id, sessões criptografadas e URLs de webhook protegidas contra SSRF.
 
+## No ar com um comando
+
+A imagem all-in-one publicada junta API, PostgreSQL e Redis — sem setup, sem config:
+
+```bash
+docker run -d -p 3000:3000 -v flux_data:/data pedrooaj/flux-api
+```
+
+Depois abra o dashboard em `http://localhost:3000/dashboard`, ou as docs
+interativas da API em `/docs`. Construída sobre **NestJS 11 + Prisma 7 (PostgreSQL) +
+Redis**, com dashboard em **Vue 3**. Passo a passo completo em [Primeiros passos](/flux-docs/pt-br/getting-started/);
+o fluxo da requisição até o endpoint está em [Como funciona](/flux-docs/pt-br/how-it-works/).
+
 ## Veja na prática
 
-Um dashboard em Vue acompanha o gateway — gerencie instâncias, sessões, webhooks e usuários sem tocar na API:
+Um dashboard em Vue acompanha o gateway — gerencie tudo visualmente, ou chame a mesma API direto.
 
 <Image src={overview} alt="Dashboard da Flux (Overview): uptime, contagem de instâncias e webhooks, e saúde dos serviços" />
 
-Prefere código? As mesmas coisas estão a uma chamada HTTP de distância:
+*Overview — uptime, contagem de instâncias e webhooks, e saúde dos serviços num relance.*
+
+<Image src={instances} alt="Página Instances do dashboard: cada conta do Telegram conectada com seu status e ações" />
+
+*Instâncias — cada conta do Telegram conectada, seu status e ações ao vivo (start/stop/abrir). Veja [Instâncias](/flux-docs/pt-br/instances/).*
+
+<Image src={webhooks} alt="Página Webhooks do dashboard: endpoints, eventos assinados e o log de entregas" />
+
+*Webhooks — seus endpoints, os eventos que escutam, e um log completo de entregas. Veja [Webhooks](/flux-docs/pt-br/webhooks/).*
+
+Prefere código? As mesmas ações estão a uma chamada HTTP de distância:
 
 ```bash
 # Enviar uma mensagem por uma instância autorizada
@@ -80,19 +105,7 @@ curl -X POST \
   -d '{"text":"Olá da Flux"}'
 ```
 
-## No ar com um comando
-
-A imagem all-in-one publicada junta API, PostgreSQL e Redis — sem setup, sem config:
-
-```bash
-docker run -d -p 3000:3000 -v flux_data:/data pedrooaj/flux-api
-```
-
-Depois abra o dashboard em `http://localhost:3000/dashboard`, ou as docs
-interativas da API em `/docs`. Passo a passo completo em [Primeiros passos](/flux-docs/pt-br/getting-started/);
-o fluxo da requisição até o endpoint está em [Como funciona](/flux-docs/pt-br/how-it-works/).
-
-Construída sobre **NestJS 11 + Prisma 7 (PostgreSQL) + Redis**, com dashboard em **Vue 3**.
+Navegue por toda a superfície na [Referência da API](/flux-docs/pt-br/api-reference/).
 
 ## Apoie o projeto
 
