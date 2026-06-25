@@ -9,12 +9,13 @@ Esta página leva você do zero até uma conta conectada enviando uma mensagem. 
 
 ## 1. Suba o gateway
 
-Duas formas de subir a stack — escolha uma:
+A Flux vem como uma **imagem única** que junta API, PostgreSQL e Redis em um só
+container. Suba das duas formas — ambas rodam a mesma imagem:
 
 <Tabs>
-  <TabItem label="Imagem all-in-one">
+  <TabItem label="docker run">
 
-O caminho mais rápido — API + PostgreSQL + Redis em um único container publicado, sem clonar ou configurar nada:
+Baixe e rode a imagem publicada — sem clonar nada:
 
 ```bash
 # Docker Hub
@@ -24,14 +25,11 @@ docker run -d -p 3000:3000 -v flux_data:/data pedrooaj/flux-api
 docker run -d -p 3000:3000 -v flux_data:/data ghcr.io/pedrol3m0z/flux-api
 ```
 
-A imagem é multi-arquitetura (`linux/amd64` + `linux/arm64`) e tem tag por release (`X.Y.Z`, `X.Y`, `latest`). O volume `/data` persiste o banco, os dados do Redis e os segredos gerados automaticamente — **mantenha-o** entre recriações do container.
-
-Feita para cenários single-host / self-hosted, não para escala horizontal (um restart recicla todos os processos).
-
   </TabItem>
   <TabItem label="Docker Compose">
 
-Clone o repo e rode a API, o Postgres e o Redis como serviços separados — a escolha para deploys escaláveis:
+Clone o repo e deixe o `docker-compose.yml` rodar a mesma imagem com o volume
+`/data` já configurado:
 
 ```bash
 git clone https://github.com/PedroL3m0z/Flux-Api.git
@@ -41,6 +39,12 @@ docker compose up -d
 
   </TabItem>
 </Tabs>
+
+A imagem é construída para `linux/amd64` e tem tag por release (`X.Y.Z`, `X.Y`,
+`latest`). O volume `/data` persiste o banco, os dados do Redis e os segredos
+gerados automaticamente — **mantenha-o** entre recriações do container. Um só
+container, sem isolamento de serviços: um restart recicla todos os processos —
+ideal para single-host / self-hosting.
 
 | Superfície | URL |
 | --- | --- |

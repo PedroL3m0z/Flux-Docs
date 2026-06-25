@@ -18,7 +18,7 @@ cd Flux-Api
 cp .env.example .env          # optional — the app boots zero-config
 yarn install
 yarn prisma:generate
-docker compose up -d postgres redis
+docker compose -f docker-compose.dev.yml up -d   # Postgres + Redis only
 yarn start:dev
 ```
 

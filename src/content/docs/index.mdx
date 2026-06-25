@@ -44,7 +44,7 @@ Flux turns one or more Telegram accounts into **instances** you drive over HTTP 
     Apache-2.0, code on GitHub. Read it, fork it, run it — no black box, no vendor lock-in.
   </Card>
   <Card title="Self-hosted" icon="setting">
-    Your accounts, your server, your data. One container with Postgres + Redis built in, or scale out with Compose.
+    Your accounts, your server, your data. A single container with the API, Postgres and Redis built in — `docker run` and you own the whole stack.
   </Card>
   <Card title="REST API" icon="list-format">
     Every Telegram action is a plain HTTP endpoint with an OpenAPI spec and interactive Scalar docs at `/docs`.
@@ -67,7 +67,7 @@ Flux turns one or more Telegram accounts into **instances** you drive over HTTP 
 
 ## Up and running in one command
 
-The published all-in-one image bundles the API, PostgreSQL and Redis — no setup, no config:
+The published single image bundles the API, PostgreSQL and Redis — no setup, no config:
 
 ```bash
 docker run -d -p 3000:3000 -v flux_data:/data pedrooaj/flux-api

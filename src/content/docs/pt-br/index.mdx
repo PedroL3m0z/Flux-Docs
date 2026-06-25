@@ -44,7 +44,7 @@ A Flux transforma uma ou mais contas do Telegram em **instâncias** que você co
     Apache-2.0, código no GitHub. Leia, faça fork, rode — sem caixa-preta, sem aprisionamento de fornecedor.
   </Card>
   <Card title="Self-hosted" icon="setting">
-    Suas contas, seu servidor, seus dados. Um container com Postgres + Redis embutidos, ou escale com o Compose.
+    Suas contas, seu servidor, seus dados. Um único container com API, Postgres e Redis embutidos — `docker run` e a stack toda é sua.
   </Card>
   <Card title="REST API" icon="list-format">
     Cada ação do Telegram é um endpoint HTTP simples, com spec OpenAPI e docs interativas (Scalar) em `/docs`.
@@ -67,7 +67,7 @@ A Flux transforma uma ou mais contas do Telegram em **instâncias** que você co
 
 ## No ar com um comando
 
-A imagem all-in-one publicada junta API, PostgreSQL e Redis — sem setup, sem config:
+A imagem única publicada junta API, PostgreSQL e Redis — sem setup, sem config:
 
 ```bash
 docker run -d -p 3000:3000 -v flux_data:/data pedrooaj/flux-api
