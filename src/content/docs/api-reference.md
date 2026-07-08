@@ -24,7 +24,7 @@ Most routes require **both** a JWT (Bearer) and the **`x-api-key`** header. The
 | JWT | `Authorization: Bearer <token>` | `POST /auth/login` (also set as an `httpOnly` cookie) |
 | API key | `x-api-key: <key>` | printed on first boot / `API_KEY` env |
 
-For details see [Authentication](/flux-docs/authentication/). Browser SSE and
+For details see [Authentication](/Flux-Docs/authentication/). Browser SSE and
 media tags that can't set headers may pass `?apiKey=<API_KEY>` instead.
 
 ## Auth
@@ -62,7 +62,7 @@ media tags that can't set headers may pass `?apiKey=<API_KEY>` instead.
 | `/telegram/instances/:id/login/code` | POST | Submit the OTP `{ code }` → `password_required` or `authorized` |
 | `/telegram/instances/:id/login/password` | POST | Submit the 2FA password `{ password }` |
 
-See [Instances](/flux-docs/instances/) and [Sessions](/flux-docs/sessions/) for
+See [Instances](/Flux-Docs/instances/) and [Sessions](/Flux-Docs/sessions/) for
 the flows, and the **Add instance** modal:
 
 ![Add instance modal, annotated](../../assets/screenshots/instance-modal-annotated.png)
@@ -81,8 +81,8 @@ the flows, and the **Add instance** modal:
 | `/telegram/instances/:id/chats/:chatId/messages/:messageId/media` | GET | Message attachment (bytes, lazy download) |
 
 Worked requests and response shapes for these are in
-[Messaging](/flux-docs/messaging/); the raw types in
-[Types & contracts](/flux-docs/types/).
+[Messaging](/Flux-Docs/messaging/); the raw types in
+[Types & contracts](/Flux-Docs/types/).
 
 ## Webhooks
 
@@ -101,7 +101,7 @@ Worked requests and response shapes for these are in
 | `/webhooks/deliveries/:deliveryId/resend` | POST | Re-queue a delivery for immediate resend |
 
 Full delivery semantics (signing, retry/backoff, headers) are in
-[Webhooks](/flux-docs/webhooks/).
+[Webhooks](/Flux-Docs/webhooks/).
 
 ## Users & system
 

@@ -52,7 +52,7 @@ Você também pode defini-los na inicialização com as variáveis de ambiente
 
 ## Sobrescrever por instância
 
-Ao criar uma [instância](/flux-docs/pt-br/instances/) você pode passar `apiId` / `apiHash`
+Ao criar uma [instância](/Flux-Docs/pt-br/instances/) você pode passar `apiId` / `apiHash`
 para sobrescrever os valores globais só para aquela conta. As credenciais efetivas são
 as **configurações globais mescladas com os overrides da instância**.
 

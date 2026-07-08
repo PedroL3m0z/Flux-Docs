@@ -84,8 +84,8 @@ interface MediaView {
 | `Role` | `admin`, `operator`, `viewer` |
 | `WebhookStatus` | `pending`, `success`, `failed`, `dead` |
 
-Status meanings are in [Instances](/flux-docs/instances/); roles in
-[Accounts](/flux-docs/accounts/).
+Status meanings are in [Instances](/Flux-Docs/instances/); roles in
+[Accounts](/Flux-Docs/accounts/).
 
 ## Auth shapes
 
@@ -130,12 +130,12 @@ interface WebhookDeliveryView {
 ```
 
 Retry backoff is `10s → 1m → 5m → 30m → 2h`; after **6 attempts** a delivery
-becomes `dead`. See [Webhooks](/flux-docs/webhooks/) for the signed POST body and
+becomes `dead`. See [Webhooks](/Flux-Docs/webhooks/) for the signed POST body and
 headers.
 
 ## Event payloads
 
-Realtime events (over [SSE or webhooks](/flux-docs/events/)) share a `DomainEvent`
+Realtime events (over [SSE or webhooks](/Flux-Docs/events/)) share a `DomainEvent`
 envelope:
 
 ```ts

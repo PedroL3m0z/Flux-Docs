@@ -68,4 +68,4 @@ mas não da chave. Todo o resto precisa de ambos.
 
 Por baixo dos panos: senhas são hasheadas com **Argon2id**, a API key é comparada
 em tempo constante, e as requisições têm rate limit por IP. Para gerenciar **quem**
-pode logar e o que pode fazer, veja [Contas](/flux-docs/pt-br/accounts/).
+pode logar e o que pode fazer, veja [Contas](/Flux-Docs/pt-br/accounts/).

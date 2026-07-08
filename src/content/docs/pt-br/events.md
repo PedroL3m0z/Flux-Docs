@@ -6,7 +6,7 @@ description: Os tipos de evento e como consumi-los — ao vivo no dashboard ou c
 Toda instância emite **eventos normalizados** quando algo acontece — uma nova
 mensagem, uma edição, um recibo de leitura, uma mudança de status. Você pode
 consumi-los de duas formas: um **stream SSE** em tempo real, ou
-[**webhooks**](/flux-docs/pt-br/webhooks/) duráveis.
+[**webhooks**](/Flux-Docs/pt-br/webhooks/) duráveis.
 
 ## Tipos de evento
 
@@ -26,7 +26,7 @@ mensagem (o clássico "visto"); `"inbound"` significa que você leu a dele.
 
 Cada evento é envolvido num envelope `DomainEvent` (`instanceId`, `type`, `at`,
 `payload`). Os formatos exatos de payload estão em
-[Tipos e contratos](/flux-docs/pt-br/types/#payloads-de-evento).
+[Tipos e contratos](/Flux-Docs/pt-br/types/#payloads-de-evento).
 
 ## Consuma eventos
 
@@ -65,5 +65,5 @@ es.onmessage = (e) => console.log(JSON.parse(e.data));
 | Entrega | Enquanto conectado (não durável) | Durável, com retentativa, assinado |
 | Escopo de evento | Streams de mensagens + status | Qualquer subconjunto de tipos assinado |
 
-Use SSE para uma UI aberta; use [webhooks](/flux-docs/pt-br/webhooks/) quando precisar
+Use SSE para uma UI aberta; use [webhooks](/Flux-Docs/pt-br/webhooks/) quando precisar
 de entrega garantida e reproduzível para um servidor.

@@ -68,4 +68,4 @@ but not the key. Everything else needs both.
 
 Under the hood: passwords are hashed with **Argon2id**, the API key is compared in
 constant time, and requests are rate-limited per IP. To manage **who** can sign in
-and what they can do, see [Accounts](/flux-docs/accounts/).
+and what they can do, see [Accounts](/Flux-Docs/accounts/).

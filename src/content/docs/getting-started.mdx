@@ -138,7 +138,7 @@ curl -X POST http://localhost:3000/auth/login \
 # → { "accessToken": "<JWT>" }
 ```
 
-See [Authentication](/flux-docs/authentication/) for the full picture.
+See [Authentication](/Flux-Docs/authentication/) for the full picture.
 
 ## 3. Set your Telegram credentials
 
@@ -153,7 +153,7 @@ curl -X PUT http://localhost:3000/telegram/settings \
   -d '{"apiId":"123456","apiHash":"abcdef..."}'
 ```
 
-More in [Telegram credentials](/flux-docs/telegram-credentials/).
+More in [Telegram credentials](/Flux-Docs/telegram-credentials/).
 
 ## 4. Create an instance
 
@@ -165,12 +165,12 @@ curl -X POST http://localhost:3000/telegram/instances \
 # → { "id": "<instanceId>", "status": "new", ... }
 ```
 
-See [Instances](/flux-docs/instances/).
+See [Instances](/Flux-Docs/instances/).
 
 ## 5. Authorize it (log in to Telegram)
 
 Open a QR login stream and scan the code with your phone, or log in by phone
-number + code. Full flows in [Sessions](/flux-docs/sessions/).
+number + code. Full flows in [Sessions](/Flux-Docs/sessions/).
 
 ## 6. Send a message
 
@@ -182,8 +182,8 @@ curl -X POST \
   -d '{"text":"Hello from Flux"}'
 ```
 
-From here, subscribe to [Webhooks](/flux-docs/webhooks/) or stream
-[Events](/flux-docs/events/) to react to incoming messages.
+From here, subscribe to [Webhooks](/Flux-Docs/webhooks/) or stream
+[Events](/Flux-Docs/events/) to react to incoming messages.
 
 ## Prefer the dashboard?
 

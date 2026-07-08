@@ -84,8 +84,8 @@ interface MediaView {
 | `Role` | `admin`, `operator`, `viewer` |
 | `WebhookStatus` | `pending`, `success`, `failed`, `dead` |
 
-Os significados dos status estão em [Instâncias](/flux-docs/pt-br/instances/); os papéis em
-[Contas](/flux-docs/pt-br/accounts/).
+Os significados dos status estão em [Instâncias](/Flux-Docs/pt-br/instances/); os papéis em
+[Contas](/Flux-Docs/pt-br/accounts/).
 
 ## Formatos de auth
 
@@ -130,12 +130,12 @@ interface WebhookDeliveryView {
 ```
 
 O backoff de retentativa é `10s → 1m → 5m → 30m → 2h`; após **6 tentativas** uma
-entrega vira `dead`. Veja [Webhooks](/flux-docs/pt-br/webhooks/) para o corpo do POST
+entrega vira `dead`. Veja [Webhooks](/Flux-Docs/pt-br/webhooks/) para o corpo do POST
 assinado e os headers.
 
 ## Payloads de evento
 
-Eventos em tempo real (via [SSE ou webhooks](/flux-docs/pt-br/events/)) compartilham um
+Eventos em tempo real (via [SSE ou webhooks](/Flux-Docs/pt-br/events/)) compartilham um
 envelope `DomainEvent`:
 
 ```ts

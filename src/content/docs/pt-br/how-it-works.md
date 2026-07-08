@@ -14,8 +14,8 @@ acompanha uma atualização de ponta a ponta.
 
 ### 1. Telegram → Engine
 
-Cada [instância](/flux-docs/pt-br/instances/) mantém uma conexão viva com o Telegram
-sobre **MTProto**, conduzida pelo seu [engine](/flux-docs/pt-br/engines/) (GramJS por
+Cada [instância](/Flux-Docs/pt-br/instances/) mantém uma conexão viva com o Telegram
+sobre **MTProto**, conduzida pelo seu [engine](/Flux-Docs/pt-br/engines/) (GramJS por
 padrão). O engine recebe atualizações cruas — novas mensagens, edições, leituras,
 reações — conforme acontecem.
 
@@ -25,10 +25,10 @@ As atualizações cruas chegam ao **sync service**, que faz duas coisas em todo 
 
 - **persiste** a mensagem/chat no Postgres (para que histórico e mídia sobrevivam a
   restarts), e
-- **publica** um [evento](/flux-docs/pt-br/events/) normalizado adiante.
+- **publica** um [evento](/Flux-Docs/pt-br/events/) normalizado adiante.
 
 É aqui que o formato de fio do Telegram vira os formatos estáveis da Flux
-(`MessageView`, `ChatView`, …) — veja [Tipos e contratos](/flux-docs/pt-br/types/).
+(`MessageView`, `ChatView`, …) — veja [Tipos e contratos](/Flux-Docs/pt-br/types/).
 
 ### 3. TelegramEventBus (RxJS Subject)
 
@@ -44,8 +44,8 @@ Dois consumidores assinam o bus:
 
 - **Stream SSE** (`/messages/stream`, `/status/stream`) — empurra eventos para
   qualquer cliente conectado em tempo real. Ótimo para dashboards ao vivo; não é
-  durável (você só recebe eventos enquanto conectado). Veja [Eventos](/flux-docs/pt-br/events/).
-- **Webhook Dispatcher** — para cada evento, encontra os [webhooks](/flux-docs/pt-br/webhooks/)
+  durável (você só recebe eventos enquanto conectado). Veja [Eventos](/Flux-Docs/pt-br/events/).
+- **Webhook Dispatcher** — para cada evento, encontra os [webhooks](/Flux-Docs/pt-br/webhooks/)
   assinados naquele tipo e vinculados àquela instância, e **cria uma linha
   `WebhookDelivery`**.
 
@@ -58,7 +58,7 @@ backoff** (`10s → 1m → 5m → 30m → 2h`; `dead` após 6 tentativas).
 
 ### 6. → Seu endpoint
 
-Você recebe um `POST` assinado. [Verifique a assinatura](/flux-docs/pt-br/webhooks/#verifique-a-assinatura),
+Você recebe um `POST` assinado. [Verifique a assinatura](/Flux-Docs/pt-br/webhooks/#verifique-a-assinatura),
 de-duplique pelo `X-Flux-Delivery`, e aja sobre o payload.
 
 ## Por que esse desenho
@@ -67,11 +67,11 @@ de-duplique pelo `X-Flux-Delivery`, e aja sobre o payload.
   (um novo stream, um novo destino) é só assinar o bus — o engine e a camada de
   sync não mudam.
 - **Agnóstico a engine.** Tudo depois do passo 2 trabalha sobre eventos
-  normalizados, então um novo [engine](/flux-docs/pt-br/engines/) entra sem tocar em
+  normalizados, então um novo [engine](/Flux-Docs/pt-br/engines/) entra sem tocar em
   eventos ou webhooks.
 - **Durável onde importa.** SSE é best-effort para UIs ao vivo; webhooks passam
   pelo outbox no Postgres para que integrações de backend tenham entrega
   at-least-once e reproduzível.
 
-Pronto para usar? Comece em [Primeiros passos](/flux-docs/pt-br/getting-started/), ou
-pule para [Eventos](/flux-docs/pt-br/events/) e [Webhooks](/flux-docs/pt-br/webhooks/).
+Pronto para usar? Comece em [Primeiros passos](/Flux-Docs/pt-br/getting-started/), ou
+pule para [Eventos](/Flux-Docs/pt-br/events/) e [Webhooks](/Flux-Docs/pt-br/webhooks/).

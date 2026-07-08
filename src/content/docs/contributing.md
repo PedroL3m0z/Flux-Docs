@@ -23,7 +23,7 @@ yarn start:dev
 ```
 
 The API comes up on `http://localhost:3000`. For the running gateway itself,
-see [Getting started](/flux-docs/getting-started/).
+see [Getting started](/Flux-Docs/getting-started/).
 
 ## Workflow
 

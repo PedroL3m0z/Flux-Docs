@@ -4,7 +4,7 @@ description: Create, connect, operate and use Telegram instances — from the da
 ---
 
 An **instance** is one Telegram account managed by Flux. You create it, authorize
-it once (see [Sessions](/flux-docs/sessions/)), then use it to read and send
+it once (see [Sessions](/Flux-Docs/sessions/)), then use it to read and send
 messages.
 
 ![Instances list in the dashboard, annotated](../../assets/screenshots/instances-annotated.png)
@@ -26,8 +26,8 @@ messages.
 | Field | Type | Required | Rules | Description |
 | --- | --- | :---: | --- | --- |
 | `label` | string | yes | 1–64 chars | Human-readable name |
-| `engine` | string | no | `gramjs` \| `telegraf` (default `gramjs`) | Telegram backend — see [Engines](/flux-docs/engines/) |
-| `apiId` | string | no | digits only | Override the global [api_id](/flux-docs/telegram-credentials/) |
+| `engine` | string | no | `gramjs` \| `telegraf` (default `gramjs`) | Telegram backend — see [Engines](/Flux-Docs/engines/) |
+| `apiId` | string | no | digits only | Override the global [api_id](/Flux-Docs/telegram-credentials/) |
 | `apiHash` | string | no | — | Override the global api_hash |
 
 ```json
@@ -36,7 +36,7 @@ messages.
 ```
 
 The new instance starts in status `new` — it has no Telegram session yet. The
-response is an `InstanceView` (see [Types](/flux-docs/types/)).
+response is an `InstanceView` (see [Types](/Flux-Docs/types/)).
 
 ## Status values
 
@@ -71,14 +71,14 @@ Each row exposes, as icon buttons: **info** (live state), **open chats**,
 | `/telegram/instances/:id` | DELETE | Remove the instance **and its session** (cascades chats/messages) |
 
 `start`/`stop`/`delete` take no body. To authorize a `new` instance, see
-[Sessions](/flux-docs/sessions/).
+[Sessions](/Flux-Docs/sessions/).
 
 ## Chats, messages & media
 
 Once an instance is `authorized` you can browse chats and contacts, read
 paginated history, and send text or media (photos, videos, documents up to
 50 MB) — in the dashboard, or over the API. The full walkthrough with worked
-requests and response shapes is in **[Messaging](/flux-docs/messaging/)**:
+requests and response shapes is in **[Messaging](/Flux-Docs/messaging/)**:
 
 | Action | Route | Method |
 | --- | --- | --- |
@@ -89,6 +89,6 @@ requests and response shapes is in **[Messaging](/flux-docs/messaging/)**:
 | Download attachment | `…/chats/:chatId/messages/:messageId/media` | GET |
 | Chat / contact avatar | `…/chats/:chatId/photo`, `…/contacts/:contactId/photo` | GET |
 
-To react to incoming messages, stream [Events](/flux-docs/events/) or subscribe a
-[Webhook](/flux-docs/webhooks/). For an account-wide view, `GET /telegram/stats`
+To react to incoming messages, stream [Events](/Flux-Docs/events/) or subscribe a
+[Webhook](/Flux-Docs/webhooks/). For an account-wide view, `GET /telegram/stats`
 returns uptime and total/authorized/connected counts.

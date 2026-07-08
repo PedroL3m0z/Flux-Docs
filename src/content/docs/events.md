@@ -5,7 +5,7 @@ description: The event types and how to consume them — live in the dashboard o
 
 Every instance emits **normalized events** when something happens — a new message,
 an edit, a read receipt, a status change. You can consume them two ways: a
-realtime **SSE stream**, or durable [**webhooks**](/flux-docs/webhooks/).
+realtime **SSE stream**, or durable [**webhooks**](/Flux-Docs/webhooks/).
 
 ## Event types
 
@@ -25,7 +25,7 @@ message (the classic "seen"); `"inbound"` means you read theirs.
 
 Each event is wrapped in a `DomainEvent` envelope (`instanceId`, `type`, `at`,
 `payload`). Exact payload shapes are in
-[Types & contracts](/flux-docs/types/#event-payloads).
+[Types & contracts](/Flux-Docs/types/#event-payloads).
 
 ## Consume events
 
@@ -63,5 +63,5 @@ es.onmessage = (e) => console.log(JSON.parse(e.data));
 | Delivery | While connected (not durable) | Durable, retried, signed |
 | Event scope | Messages + status streams | Any subset of types you subscribe |
 
-Use SSE for a UI that's open; use [webhooks](/flux-docs/webhooks/) when you need
+Use SSE for a UI that's open; use [webhooks](/Flux-Docs/webhooks/) when you need
 guaranteed, replayable delivery to a server.

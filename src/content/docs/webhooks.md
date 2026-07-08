@@ -4,8 +4,8 @@ description: Receive Telegram events on your own endpoint — signed and retried
 ---
 
 A **webhook** delivers events to a URL you own. You subscribe it to a subset of
-[event types](/flux-docs/events/) and link it to one or more
-[instances](/flux-docs/instances/); whenever a matching event happens, Flux POSTs
+[event types](/Flux-Docs/events/) and link it to one or more
+[instances](/Flux-Docs/instances/); whenever a matching event happens, Flux POSTs
 it to your endpoint with retries and an HMAC signature.
 
 ![Webhooks list in the dashboard, annotated](../../assets/screenshots/webhooks-annotated.png)
@@ -31,7 +31,7 @@ it to your endpoint with retries and an HMAC signature.
 | --- | --- | :---: | --- | --- |
 | `name` | string | yes | 1–80 chars | Label for the webhook |
 | `url` | string | yes | valid URL | Where deliveries are POSTed |
-| `events` | string[] | yes | non-empty; each a valid [event type](/flux-docs/events/) | Which events to send |
+| `events` | string[] | yes | non-empty; each a valid [event type](/Flux-Docs/events/) | Which events to send |
 | `instanceIds` | string[] | no | instance ids | Instances to listen on (link later if omitted) |
 | `allowInternal` | boolean | no | default `false` | Allow a **private/loopback** target (same Docker network / LAN) — see [Target scope](#target-scope-external-vs-internal) |
 

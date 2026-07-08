@@ -8,7 +8,7 @@ hero:
     file: ../../../assets/logo.png
   actions:
     - text: Começar
-      link: /flux-docs/pt-br/getting-started/
+      link: /Flux-Docs/pt-br/getting-started/
       icon: right-arrow
       variant: primary
     - text: Ver no GitHub
@@ -59,11 +59,11 @@ A Flux transforma uma ou mais contas do Telegram em **instâncias** que você co
 
 ## O que dá para fazer
 
-- **Rode várias contas** — cada número do Telegram é uma [instância](/flux-docs/pt-br/instances/) com sua própria sessão, operada de forma independente num só gateway.
+- **Rode várias contas** — cada número do Telegram é uma [instância](/Flux-Docs/pt-br/instances/) com sua própria sessão, operada de forma independente num só gateway.
 - **Leia e envie mensagens** — liste chats, navegue pelo histórico, envie texto e mídia (fotos, vídeos, documentos até 50 MB) por HTTP simples.
-- **Reaja em tempo real** — novas mensagens, edições, exclusões, recibos de leitura, reações e mudanças de status via [SSE](/flux-docs/pt-br/events/) ao vivo, sem polling.
-- **Receba webhooks assinados** — assine seu endpoint em qualquer subconjunto de eventos; entregas com assinatura HMAC, guardadas num outbox no Postgres e [com retentativa e backoff](/flux-docs/pt-br/webhooks/).
-- **Controle o acesso** — [contas](/flux-docs/pt-br/accounts/) do dashboard com papéis admin / operator / viewer, senhas Argon2id, sessões criptografadas e URLs de webhook protegidas contra SSRF.
+- **Reaja em tempo real** — novas mensagens, edições, exclusões, recibos de leitura, reações e mudanças de status via [SSE](/Flux-Docs/pt-br/events/) ao vivo, sem polling.
+- **Receba webhooks assinados** — assine seu endpoint em qualquer subconjunto de eventos; entregas com assinatura HMAC, guardadas num outbox no Postgres e [com retentativa e backoff](/Flux-Docs/pt-br/webhooks/).
+- **Controle o acesso** — [contas](/Flux-Docs/pt-br/accounts/) do dashboard com papéis admin / operator / viewer, senhas Argon2id, sessões criptografadas e URLs de webhook protegidas contra SSRF.
 
 ## No ar com um comando
 
@@ -75,8 +75,8 @@ docker run -d -p 3000:3000 -v flux_data:/data pedrooaj/flux-api
 
 Depois abra o dashboard em `http://localhost:3000/dashboard`, ou as docs
 interativas da API em `/docs`. Construída sobre **NestJS 11 + Prisma 7 (PostgreSQL) +
-Redis**, com dashboard em **Vue 3**. Passo a passo completo em [Primeiros passos](/flux-docs/pt-br/getting-started/);
-o fluxo da requisição até o endpoint está em [Como funciona](/flux-docs/pt-br/how-it-works/).
+Redis**, com dashboard em **Vue 3**. Passo a passo completo em [Primeiros passos](/Flux-Docs/pt-br/getting-started/);
+o fluxo da requisição até o endpoint está em [Como funciona](/Flux-Docs/pt-br/how-it-works/).
 
 ## Veja na prática
 
@@ -88,11 +88,11 @@ Um dashboard em Vue acompanha o gateway — gerencie tudo visualmente, ou chame 
 
 <Image src={instances} alt="Página Instances do dashboard: cada conta do Telegram conectada com seu status e ações" />
 
-*Instâncias — cada conta do Telegram conectada, seu status e ações ao vivo (start/stop/abrir). Veja [Instâncias](/flux-docs/pt-br/instances/).*
+*Instâncias — cada conta do Telegram conectada, seu status e ações ao vivo (start/stop/abrir). Veja [Instâncias](/Flux-Docs/pt-br/instances/).*
 
 <Image src={webhooks} alt="Página Webhooks do dashboard: endpoints, eventos assinados e o log de entregas" />
 
-*Webhooks — seus endpoints, os eventos que escutam, e um log completo de entregas. Veja [Webhooks](/flux-docs/pt-br/webhooks/).*
+*Webhooks — seus endpoints, os eventos que escutam, e um log completo de entregas. Veja [Webhooks](/Flux-Docs/pt-br/webhooks/).*
 
 Prefere código? As mesmas ações estão a uma chamada HTTP de distância:
 
@@ -105,7 +105,7 @@ curl -X POST \
   -d '{"text":"Olá da Flux"}'
 ```
 
-Navegue por toda a superfície na [Referência da API](/flux-docs/pt-br/api-reference/).
+Navegue por toda a superfície na [Referência da API](/Flux-Docs/pt-br/api-reference/).
 
 ## Apoie o projeto
 
@@ -119,19 +119,19 @@ A Flux é gratuita e open source. Se ela te economiza tempo, você pode apoiar o
 
 <footer style="margin-top:3.5rem; padding-top:1.5rem; border-top:1px solid var(--sl-color-gray-5); text-align:center; font-size:0.875rem;">
   <p style="display:flex; flex-wrap:wrap; justify-content:center; gap:0.4rem 0.9rem; margin:0;">
-    <a href="/flux-docs/pt-br/getting-started/">Primeiros passos</a>
-    <a href="/flux-docs/pt-br/how-it-works/">Como funciona</a>
-    <a href="/flux-docs/pt-br/authentication/">Autenticação</a>
-    <a href="/flux-docs/pt-br/telegram-credentials/">Credenciais do Telegram</a>
-    <a href="/flux-docs/pt-br/instances/">Instâncias</a>
-    <a href="/flux-docs/pt-br/sessions/">Sessões</a>
-    <a href="/flux-docs/pt-br/messaging/">Mensagens</a>
-    <a href="/flux-docs/pt-br/webhooks/">Webhooks</a>
-    <a href="/flux-docs/pt-br/events/">Eventos</a>
-    <a href="/flux-docs/pt-br/accounts/">Contas</a>
-    <a href="/flux-docs/pt-br/api-reference/">Referência da API</a>
-    <a href="/flux-docs/pt-br/types/">Tipos e contratos</a>
-    <a href="/flux-docs/pt-br/contributing/">Contribuindo</a>
+    <a href="/Flux-Docs/pt-br/getting-started/">Primeiros passos</a>
+    <a href="/Flux-Docs/pt-br/how-it-works/">Como funciona</a>
+    <a href="/Flux-Docs/pt-br/authentication/">Autenticação</a>
+    <a href="/Flux-Docs/pt-br/telegram-credentials/">Credenciais do Telegram</a>
+    <a href="/Flux-Docs/pt-br/instances/">Instâncias</a>
+    <a href="/Flux-Docs/pt-br/sessions/">Sessões</a>
+    <a href="/Flux-Docs/pt-br/messaging/">Mensagens</a>
+    <a href="/Flux-Docs/pt-br/webhooks/">Webhooks</a>
+    <a href="/Flux-Docs/pt-br/events/">Eventos</a>
+    <a href="/Flux-Docs/pt-br/accounts/">Contas</a>
+    <a href="/Flux-Docs/pt-br/api-reference/">Referência da API</a>
+    <a href="/Flux-Docs/pt-br/types/">Tipos e contratos</a>
+    <a href="/Flux-Docs/pt-br/contributing/">Contribuindo</a>
   </p>
   <p style="margin-top:1.25rem; color:var(--sl-color-gray-3);">
     Flux API · Apache-2.0 · <a href="https://github.com/PedroL3m0z/Flux-Api">GitHub</a> · <a href="https://hub.docker.com/r/pedrooaj/flux-api">Docker Hub</a> · <a href="https://buymeacoffee.com/pedroantonl">Buy me a coffee</a>

@@ -4,8 +4,8 @@ description: Receba eventos do Telegram no seu endpoint — assinados e com rete
 ---
 
 Um **webhook** entrega eventos a uma URL que você controla. Você o assina em um
-subconjunto de [tipos de evento](/flux-docs/pt-br/events/) e o vincula a uma ou mais
-[instâncias](/flux-docs/pt-br/instances/); sempre que um evento correspondente acontece, a Flux
+subconjunto de [tipos de evento](/Flux-Docs/pt-br/events/) e o vincula a uma ou mais
+[instâncias](/Flux-Docs/pt-br/instances/); sempre que um evento correspondente acontece, a Flux
 faz POST dele no seu endpoint com retentativas e uma assinatura HMAC.
 
 ![Lista de webhooks no dashboard, anotada](../../../assets/screenshots/webhooks-annotated.png)
@@ -31,7 +31,7 @@ faz POST dele no seu endpoint com retentativas e uma assinatura HMAC.
 | --- | --- | :---: | --- | --- |
 | `name` | string | sim | 1–80 caracteres | Rótulo do webhook |
 | `url` | string | sim | URL válida | Onde as entregas são enviadas via POST |
-| `events` | string[] | sim | não vazio; cada um um [tipo de evento](/flux-docs/pt-br/events/) válido | Quais eventos enviar |
+| `events` | string[] | sim | não vazio; cada um um [tipo de evento](/Flux-Docs/pt-br/events/) válido | Quais eventos enviar |
 | `instanceIds` | string[] | não | ids de instância | Instâncias a escutar (vincule depois se omitido) |
 | `allowInternal` | boolean | não | padrão `false` | Permite um destino **privado/loopback** (mesma rede Docker / LAN) — veja [Escopo do destino](#escopo-do-destino-external-vs-internal) |
 

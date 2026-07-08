@@ -24,7 +24,7 @@ grupo `auth` e `/health` são as exceções — veja a coluna **Auth**.
 | JWT | `Authorization: Bearer <token>` | `POST /auth/login` (também definido como cookie `httpOnly`) |
 | API key | `x-api-key: <key>` | impressa no primeiro boot / env `API_KEY` |
 
-Para detalhes veja [Autenticação](/flux-docs/pt-br/authentication/). SSE no navegador e
+Para detalhes veja [Autenticação](/Flux-Docs/pt-br/authentication/). SSE no navegador e
 tags de mídia que não podem definir headers podem passar `?apiKey=<API_KEY>`.
 
 ## Auth
@@ -62,7 +62,7 @@ tags de mídia que não podem definir headers podem passar `?apiKey=<API_KEY>`.
 | `/telegram/instances/:id/login/code` | POST | Envia o OTP `{ code }` → `password_required` ou `authorized` |
 | `/telegram/instances/:id/login/password` | POST | Envia a senha 2FA `{ password }` |
 
-Veja [Instâncias](/flux-docs/pt-br/instances/) e [Sessões](/flux-docs/pt-br/sessions/) para
+Veja [Instâncias](/Flux-Docs/pt-br/instances/) e [Sessões](/Flux-Docs/pt-br/sessions/) para
 os fluxos, e o modal **Add instance**:
 
 ![Modal de adicionar instância, anotado](../../../assets/screenshots/instance-modal-annotated.png)
@@ -81,8 +81,8 @@ os fluxos, e o modal **Add instance**:
 | `/telegram/instances/:id/chats/:chatId/messages/:messageId/media` | GET | Anexo da mensagem (bytes, download sob demanda) |
 
 Requisições prontas e formatos de resposta disso estão em
-[Mensagens](/flux-docs/pt-br/messaging/); os tipos crus em
-[Tipos e contratos](/flux-docs/pt-br/types/).
+[Mensagens](/Flux-Docs/pt-br/messaging/); os tipos crus em
+[Tipos e contratos](/Flux-Docs/pt-br/types/).
 
 ## Webhooks
 
@@ -101,7 +101,7 @@ Requisições prontas e formatos de resposta disso estão em
 | `/webhooks/deliveries/:deliveryId/resend` | POST | Reenfileira uma entrega para reenvio imediato |
 
 A semântica completa de entrega (assinatura, retry/backoff, headers) está em
-[Webhooks](/flux-docs/pt-br/webhooks/).
+[Webhooks](/Flux-Docs/pt-br/webhooks/).
 
 ## Usuários e sistema
 

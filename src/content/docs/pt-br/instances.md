@@ -4,7 +4,7 @@ description: Crie, conecte, opere e use instâncias do Telegram — pelo dashboa
 ---
 
 Uma **instância** é uma conta do Telegram gerenciada pela Flux. Você a cria, a
-autoriza uma vez (veja [Sessões](/flux-docs/pt-br/sessions/)), e então a usa para ler e
+autoriza uma vez (veja [Sessões](/Flux-Docs/pt-br/sessions/)), e então a usa para ler e
 enviar mensagens.
 
 ![Lista de instâncias no dashboard, anotada](../../../assets/screenshots/instances-annotated.png)
@@ -26,8 +26,8 @@ enviar mensagens.
 | Campo | Tipo | Obrigatório | Regras | Descrição |
 | --- | --- | :---: | --- | --- |
 | `label` | string | sim | 1–64 caracteres | Nome legível |
-| `engine` | string | não | `gramjs` \| `telegraf` (padrão `gramjs`) | Backend do Telegram — veja [Engines](/flux-docs/pt-br/engines/) |
-| `apiId` | string | não | só dígitos | Sobrescreve o [api_id](/flux-docs/pt-br/telegram-credentials/) global |
+| `engine` | string | não | `gramjs` \| `telegraf` (padrão `gramjs`) | Backend do Telegram — veja [Engines](/Flux-Docs/pt-br/engines/) |
+| `apiId` | string | não | só dígitos | Sobrescreve o [api_id](/Flux-Docs/pt-br/telegram-credentials/) global |
 | `apiHash` | string | não | — | Sobrescreve o api_hash global |
 
 ```json
@@ -36,7 +36,7 @@ enviar mensagens.
 ```
 
 A nova instância começa no status `new` — ainda não tem sessão do Telegram. A
-resposta é um `InstanceView` (veja [Tipos](/flux-docs/pt-br/types/)).
+resposta é um `InstanceView` (veja [Tipos](/Flux-Docs/pt-br/types/)).
 
 ## Valores de status
 
@@ -71,7 +71,7 @@ Cada linha expõe, como botões de ícone: **info** (estado ao vivo), **abrir ch
 | `/telegram/instances/:id` | DELETE | Remove a instância **e sua sessão** (cascateia chats/mensagens) |
 
 `start`/`stop`/`delete` não levam corpo. Para autorizar uma instância `new`, veja
-[Sessões](/flux-docs/pt-br/sessions/).
+[Sessões](/Flux-Docs/pt-br/sessions/).
 
 ## Chats, mensagens e mídia
 
@@ -79,7 +79,7 @@ Uma vez que a instância esteja `authorized` você pode navegar por chats e
 contatos, ler o histórico paginado, e enviar texto ou mídia (fotos, vídeos,
 documentos até 50 MB) — no dashboard, ou pela API. O passo a passo completo com
 requisições prontas e formatos de resposta está em
-**[Mensagens](/flux-docs/pt-br/messaging/)**:
+**[Mensagens](/Flux-Docs/pt-br/messaging/)**:
 
 | Ação | Rota | Método |
 | --- | --- | --- |
@@ -90,6 +90,6 @@ requisições prontas e formatos de resposta está em
 | Baixar anexo | `…/chats/:chatId/messages/:messageId/media` | GET |
 | Avatar de chat / contato | `…/chats/:chatId/photo`, `…/contacts/:contactId/photo` | GET |
 
-Para reagir a mensagens recebidas, consuma [Eventos](/flux-docs/pt-br/events/) ou assine um
-[Webhook](/flux-docs/pt-br/webhooks/). Para uma visão da conta toda, `GET /telegram/stats`
+Para reagir a mensagens recebidas, consuma [Eventos](/Flux-Docs/pt-br/events/) ou assine um
+[Webhook](/Flux-Docs/pt-br/webhooks/). Para uma visão da conta toda, `GET /telegram/stats`
 retorna uptime e contagens total/autorizadas/conectadas.

@@ -4,7 +4,7 @@ description: Manage dashboard users and what they're allowed to do — from the 
 ---
 
 **Accounts** are the dashboard users who sign in to Flux — distinct from the
-Telegram [instances](/flux-docs/instances/) they operate. Each account has one
+Telegram [instances](/Flux-Docs/instances/) they operate. Each account has one
 **role** that decides what it can do. Managing accounts requires the **admin**
 role.
 
@@ -90,4 +90,4 @@ another admin, or edit a different field.
 :::
 
 User records never expose the password hash. See
-[Authentication](/flux-docs/authentication/) for how these accounts sign in.
+[Authentication](/Flux-Docs/authentication/) for how these accounts sign in.

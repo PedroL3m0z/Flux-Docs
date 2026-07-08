@@ -14,8 +14,8 @@ update end to end.
 
 ### 1. Telegram → Engine
 
-Each [instance](/flux-docs/instances/) holds a live connection to Telegram over
-**MTProto**, run by its [engine](/flux-docs/engines/) (GramJS by default). The
+Each [instance](/Flux-Docs/instances/) holds a live connection to Telegram over
+**MTProto**, run by its [engine](/Flux-Docs/engines/) (GramJS by default). The
 engine receives raw updates — new messages, edits, reads, reactions — as they
 happen.
 
@@ -25,10 +25,10 @@ Raw updates hit the **sync service**, which does two things on every event:
 
 - **persists** the message/chat into Postgres (so history and media survive
   restarts), and
-- **publishes** a normalized [event](/flux-docs/events/) onward.
+- **publishes** a normalized [event](/Flux-Docs/events/) onward.
 
 This is where Telegram's wire format becomes Flux's stable shapes
-(`MessageView`, `ChatView`, …) — see [Types & contracts](/flux-docs/types/).
+(`MessageView`, `ChatView`, …) — see [Types & contracts](/Flux-Docs/types/).
 
 ### 3. TelegramEventBus (RxJS Subject)
 
@@ -44,8 +44,8 @@ Two consumers subscribe to the bus:
 
 - **SSE stream** (`/messages/stream`, `/status/stream`) — pushes events to any
   connected client in realtime. Great for live dashboards; not durable (you only
-  get events while connected). See [Events](/flux-docs/events/).
-- **Webhook Dispatcher** — for each event, finds the [webhooks](/flux-docs/webhooks/)
+  get events while connected). See [Events](/Flux-Docs/events/).
+- **Webhook Dispatcher** — for each event, finds the [webhooks](/Flux-Docs/webhooks/)
   subscribed to that type and linked to that instance, and **creates a
   `WebhookDelivery`** row.
 
@@ -58,7 +58,7 @@ endpoint, **signed with HMAC** (`X-Flux-Signature`) and **retried with backoff**
 
 ### 6. → Your endpoint
 
-You receive a signed `POST`. [Verify the signature](/flux-docs/webhooks/#verify-the-signature),
+You receive a signed `POST`. [Verify the signature](/Flux-Docs/webhooks/#verify-the-signature),
 de-duplicate on `X-Flux-Delivery`, and act on the payload.
 
 ## Why this shape
@@ -67,10 +67,10 @@ de-duplicate on `X-Flux-Delivery`, and act on the payload.
   a new sink) means subscribing to the bus — the engine and sync layer don't
   change.
 - **Engine-agnostic.** Everything after step 2 works on normalized events, so a
-  new [engine](/flux-docs/engines/) plugs in without touching events or webhooks.
+  new [engine](/Flux-Docs/engines/) plugs in without touching events or webhooks.
 - **Durable where it matters.** SSE is best-effort for live UIs; webhooks go
   through the Postgres outbox so backend integrations get at-least-once,
   replayable delivery.
 
-Ready to drive it? Start at [Getting started](/flux-docs/getting-started/), or
-jump to [Events](/flux-docs/events/) and [Webhooks](/flux-docs/webhooks/).
+Ready to drive it? Start at [Getting started](/Flux-Docs/getting-started/), or
+jump to [Events](/Flux-Docs/events/) and [Webhooks](/Flux-Docs/webhooks/).

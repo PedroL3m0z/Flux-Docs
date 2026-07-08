@@ -52,7 +52,7 @@ environment variables.
 
 ## Override per instance
 
-When creating an [instance](/flux-docs/instances/) you may pass `apiId` / `apiHash`
+When creating an [instance](/Flux-Docs/instances/) you may pass `apiId` / `apiHash`
 to override the global values for that account only. The effective credentials are
 the **global settings merged with the instance's overrides**.
 

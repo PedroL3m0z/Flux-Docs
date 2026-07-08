@@ -3,7 +3,7 @@ title: Messaging
 description: List chats, page through history, send text and media, and download attachments over the Flux HTTP API.
 ---
 
-Once an instance is **`authorized`** (see [Sessions](/flux-docs/sessions/)), you
+Once an instance is **`authorized`** (see [Sessions](/Flux-Docs/sessions/)), you
 drive its Telegram account entirely over HTTP: list chats, read history, send
 text and media, and pull attachment bytes. This page walks each operation with a
 worked request and the shape it returns.
@@ -18,7 +18,7 @@ Every route below needs **both** auth headers and the instance's `chat:*` /
 `<id>` is the **instance** id; `<chatId>` is a chat id from the chat list. All
 Telegram ids (`tgPeerId`, `tgMessageId`, …) cross the wire as **strings** —
 they exceed JS number precision. Full shapes live in
-[Types & contracts](/flux-docs/types/).
+[Types & contracts](/Flux-Docs/types/).
 
 ## List chats
 
@@ -217,6 +217,6 @@ at login covers the Bearer side.
 
 Polling history is fine for catch-up, but to **react as messages arrive**, don't
 poll — stream them. New messages, edits, deletes, read receipts and reactions
-push live over [Events (SSE)](/flux-docs/events/) or to your own endpoint via
-[Webhooks](/flux-docs/webhooks/). Incoming `message.new` payloads are the same
+push live over [Events (SSE)](/Flux-Docs/events/) or to your own endpoint via
+[Webhooks](/Flux-Docs/webhooks/). Incoming `message.new` payloads are the same
 `MessageView` shape shown above.

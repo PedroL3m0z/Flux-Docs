@@ -3,7 +3,7 @@ title: Mensagens
 description: Liste chats, navegue pelo histórico, envie texto e mídia, e baixe anexos pela API HTTP da Flux.
 ---
 
-Com a instância **`authorized`** (veja [Sessões](/flux-docs/pt-br/sessions/)),
+Com a instância **`authorized`** (veja [Sessões](/Flux-Docs/pt-br/sessions/)),
 você opera a conta do Telegram inteiramente por HTTP: liste chats, leia o
 histórico, envie texto e mídia, e baixe os bytes dos anexos. Esta página percorre
 cada operação com uma requisição pronta e o formato que ela retorna.
@@ -18,7 +18,7 @@ Toda rota abaixo precisa das **duas** headers de auth e da permissão `chat:*` /
 `<id>` é o id da **instância**; `<chatId>` é um id de chat vindo da lista de
 chats. Todos os ids do Telegram (`tgPeerId`, `tgMessageId`, …) cruzam a fronteira
 como **strings** — excedem a precisão numérica do JS. Formatos completos em
-[Tipos e contratos](/flux-docs/pt-br/types/).
+[Tipos e contratos](/Flux-Docs/pt-br/types/).
 
 ## Listar chats
 
@@ -216,6 +216,6 @@ JWT setado no login cobre o lado do Bearer.
 
 Pollar o histórico serve para catch-up, mas para **reagir conforme as mensagens
 chegam**, não fique pollando — transmita-as. Novas mensagens, edições, exclusões,
-recibos de leitura e reações chegam ao vivo via [Eventos (SSE)](/flux-docs/pt-br/events/)
-ou ao seu endpoint via [Webhooks](/flux-docs/pt-br/webhooks/). Os payloads
+recibos de leitura e reações chegam ao vivo via [Eventos (SSE)](/Flux-Docs/pt-br/events/)
+ou ao seu endpoint via [Webhooks](/Flux-Docs/pt-br/webhooks/). Os payloads
 `message.new` de entrada têm o mesmo formato `MessageView` mostrado acima.

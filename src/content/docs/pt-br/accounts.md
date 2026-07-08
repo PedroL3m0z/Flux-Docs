@@ -4,7 +4,7 @@ description: Gerencie os usuários do dashboard e o que podem fazer — pelo das
 ---
 
 **Contas** são os usuários do dashboard que fazem login na Flux — distintos das
-[instâncias](/flux-docs/pt-br/instances/) do Telegram que operam. Cada conta tem um
+[instâncias](/Flux-Docs/pt-br/instances/) do Telegram que operam. Cada conta tem um
 **papel** (role) que decide o que pode fazer. Gerenciar contas exige o papel
 **admin**.
 
@@ -90,4 +90,4 @@ outro admin, ou edite um campo diferente.
 :::
 
 Registros de usuário nunca expõem o hash da senha. Veja
-[Autenticação](/flux-docs/pt-br/authentication/) para como essas contas fazem login.
+[Autenticação](/Flux-Docs/pt-br/authentication/) para como essas contas fazem login.

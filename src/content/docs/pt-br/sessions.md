@@ -75,4 +75,4 @@ endpoint para QR e telefone.
   (retome depois com `start`).
 - `DELETE /telegram/instances/:id` remove a instância **e** sua sessão.
 
-Veja [Instâncias](/flux-docs/pt-br/instances/) para start/stop/delete e os valores de status.
+Veja [Instâncias](/Flux-Docs/pt-br/instances/) para start/stop/delete e os valores de status.
