@@ -27,7 +27,7 @@ export default defineConfig({
         },
       ],
       editLink: {
-        baseUrl: 'https://github.com/PedroL3m0z/flux-docs/edit/main/',
+        baseUrl: 'https://github.com/PedroL3m0z/Flux-Docs/edit/main/',
       },
       // English at the site root, Brazilian Portuguese under /pt-br/.
       defaultLocale: 'root',
